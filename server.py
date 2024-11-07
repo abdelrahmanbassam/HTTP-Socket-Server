@@ -44,7 +44,7 @@ def getRequestHandler(connection, filePath):
 def postRequestHandler(connection, filePath, request):
     pass
 
-def startServer(port):
+def startServer(port = 8080):
     # Server Configuration
     LOCAL_IP = socket.gethostbyname(socket.gethostname())# Get the IP address of the server 
     ADDRESS = (LOCAL_IP, port) 
