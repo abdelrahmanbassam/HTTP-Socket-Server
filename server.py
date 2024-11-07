@@ -69,7 +69,7 @@ def startServer(port):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python server.py <port>")
+        print("please provide the port number")
         sys.exit(1)
 
     port = int(sys.argv[1])
