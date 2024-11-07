@@ -51,7 +51,7 @@ def startServer(port = 8080):
     ADDRESS = (LOCAL_IP, port) 
 
     # Create a socket
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)#SOCK_STREAM for TCP
     server.bind(ADDRESS)
     server.listen()
     print(f"[LISTENING] Server is listening on {LOCAL_IP} on PORT:{port}")
