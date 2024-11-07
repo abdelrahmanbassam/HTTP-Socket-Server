@@ -64,9 +64,8 @@ def startServer(port = 8080):
         # Create a thread to handle the connection take the connection and the address as arguments
         thread = threading.Thread(target=connectClient, args=(connection,address))
         thread.start()
-        print("[NEW CONNECTION FROM A CLIENT]")
         #Subtract the main thread from the active threads
-        print(f"[NUMBER OF CONNECTIONS]: {threading.activeCount() - 1}")
+        print(f"[NUMBER OF CONNECTIONS]: {threading.active_count() - 1}")
 
 if __name__ == "__main__":
     # if len(sys.argv) != 2:
