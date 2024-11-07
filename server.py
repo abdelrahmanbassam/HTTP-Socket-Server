@@ -1,5 +1,7 @@
 import socket
 import threading
+import sys
+
 
 #we can change the protocol to any other string
 DISCONNECT_PORTOCOL = "DISCONNECT!"
@@ -10,27 +12,48 @@ def connectClient(connection,address):
     while isConneted:
         # Receive the data with a size of 1024 bytes(we can increase/decrease the size)
         massegeLength = connection.recv(1024).decode()
-        if massegeLength:
-            massegeLength = int(massegeLength)
-            data = connection.recv(massegeLength).decode()
-            if data == DISCONNECT_PORTOCOL:
-                isConneted = False
-            print(f"[{address}] {data}")
-        else:
-            isConneted = False
-    connection.close()
+        if not massegeLength:
+            break
 
-def startServer():
+        massegeLength = int(massegeLength)
+        request = connection.recv(massegeLength).decode()
+
+        if request == DISCONNECT_PORTOCOL:
+            isConneted = False
+
+        # Parse request type (GET or POST)
+        requestHeader = request.splitlines()
+        command, filePath = requestHeader[0].split()
+
+        if command == "GET":
+            print(f"[GET REQUEST] {filePath}")
+            getRequestHandler(connection, filePath)
+
+        elif command == "POST":
+            print(f"[POST REQUEST] {filePath}")
+            postRequestHandler(connection, filePath, request)
+
+        else:
+            connection.send(b"HTTP/1.1 400 Bad Request\r\n\r\n")
+    connection.close()
+    print(f"[CONNECTION CLOSED] {address}")
+
+def getRequestHandler(connection, filePath):
+    pass
+
+def postRequestHandler(connection, filePath, request):
+    pass
+
+def startServer(port):
     # Server Configuration
-    PORT = 8080
     LOCAL_IP = socket.gethostbyname(socket.gethostname())# Get the IP address of the server 
-    ADDRESS = (LOCAL_IP, PORT) 
+    ADDRESS = (LOCAL_IP, port) 
 
     # Create a socket
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(ADDRESS)
     server.listen()
-    print(f"[LISTENING] Server is listening on {LOCAL_IP} on PORT:{PORT}")
+    print(f"[LISTENING] Server is listening on {LOCAL_IP} on PORT:{port}")
 
     # Accept the connection from the client and create a thread to handle the connection
     while True:
@@ -44,4 +67,10 @@ def startServer():
         #Subtract the main thread from the active threads
         print(f"[NUMBER OF CONNECTIONS] {threading.activeCount() - 1}")
 
-startServer()
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python server.py <port>")
+        sys.exit(1)
+
+    port = int(sys.argv[1])
+    startServer(port)
