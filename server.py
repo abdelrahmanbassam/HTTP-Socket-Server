@@ -11,19 +11,19 @@ def connectClient(connection,address):
     isConneted = True
     while isConneted:
         # Receive the data with a size of 1024 bytes(we can increase/decrease the size)
-        massegeLength = connection.recv(1024).decode()
-        if not massegeLength:
+        request = connection.recv(1024).decode()
+        if not request:
             break
 
-        massegeLength = int(massegeLength)
-        request = connection.recv(massegeLength).decode()
+        # massegeLength = int(massegeLength)
+        # request = connection.recv(massegeLength).decode()
 
         if request == DISCONNECT_PORTOCOL:
             isConneted = False
 
         # Parse request type (GET or POST)
         requestHeader = request.splitlines()
-        command, filePath = requestHeader[0].split()
+        command, filePath,http = requestHeader[0].split()
 
         if command == "GET":
             print(f"[GET REQUEST] {filePath}")
@@ -66,12 +66,13 @@ def startServer(port = 8080):
         thread.start()
         print("[NEW CONNECTION FROM A CLIENT]")
         #Subtract the main thread from the active threads
-        print(f"[NUMBER OF CONNECTIONS] {threading.activeCount() - 1}")
+        print(f"[NUMBER OF CONNECTIONS]: {threading.activeCount() - 1}")
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("please provide the port number")
-        sys.exit(1)
+    # if len(sys.argv) != 2:
+    #     print("please provide the port number")
+    #     sys.exit(1)
 
-    port = int(sys.argv[1])
+    # port = int(sys.argv[1])
+    port = 8080
     startServer(port)
