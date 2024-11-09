@@ -1,0 +1,6 @@
+client_get server.txt localhost
+client_get server.png localhost
+client_get server.html localhost
+client_post client.txt localhost
+client_post client.png localhost
+client_post client.html localhost
