@@ -36,12 +36,7 @@ def sendPostRequest(client, file_path, keep_alive=True):
         data = file.read()
     request = f"POST /{file_path} HTTP/1.1\r\nHost: {client.getsockname()[0]}\r\nContent-Length: {len(data)}\r\nConnection: {connection_header}\r\n\r\n".encode() + data
     client.send(request)
-    response = b""
-    while True:
-        part = client.recv(CHUNK_SIZE)
-        if not part:
-            break
-        response += part
+    response = client.recv(CHUNK_SIZE)
     print(response.decode())
 
 def processCommands(command_file):
