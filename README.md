@@ -2,11 +2,6 @@
 
 # Simple HTTP Web Server and Client
 
-### Contributors
-
-- **Mourad Mahgoub Abdelsalam 21011303**
-- **Abdelrahman Bassam Elsayed 21010729**
-
 ## Introduction
 
 This project implements a basic HTTP server and client using socket programming in Python. The server handles HTTP GET and POST requests, supporting multi-threaded handling and persistent connections. The client sends HTTP requests based on commands from a file, and the performance analyzer evaluates the server’s response time under varying client loads.
