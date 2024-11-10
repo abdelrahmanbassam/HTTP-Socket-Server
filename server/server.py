@@ -102,5 +102,8 @@ def startServer(port=8080):
         print(f"[NUMBER OF CONNECTIONS]: {threading.active_count() - 1}")
 
 if __name__ == "__main__":
-    port = 8080
+    if len(sys.argv) > 1:
+        port = int(sys.argv[1])
+    else:
+        port = 8080
     startServer(port)
